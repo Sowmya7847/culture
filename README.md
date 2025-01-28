@@ -65,6 +65,16 @@
 
         audio {
             margin-top: 15px;
+            width: 100%;
+        }
+
+        .loader {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .loader img {
+            width: 50px;
         }
     </style>
 </head>
@@ -97,6 +107,10 @@
 
         <button id="generate">Generate Fusion</button>
 
+        <div class="loader">
+            <img src="https://media.giphy.com/media/d2ZFV4gL61mDUgTZgE/giphy.gif" alt="Loading..."/>
+        </div>
+
         <div class="output">
             <h3>Generated Music:</h3>
             <audio id="audio" controls></audio>
@@ -109,20 +123,24 @@
         const cultureSelect = document.getElementById("culture");
         const tempoSelect = document.getElementById("tempo");
         const audioPlayer = document.getElementById("audio");
+        const loader = document.querySelector(".loader");
 
         async function fetchFusionMusic(genre, culture, tempo) {
             try {
+                loader.style.display = "block"; // Show loader
                 // Mock API response for testing in sandboxed environments
                 const mockResponse = {
                     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
                 };
 
                 // Simulate fetch with mock response
-                await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
                 return mockResponse.audioUrl; // Return mock audio URL
             } catch (error) {
                 console.error(error);
                 alert("Error generating music. Please try again.");
+            } finally {
+                loader.style.display = "none"; // Hide loader
             }
         }
 
