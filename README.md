@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -125,17 +125,82 @@
         const audioPlayer = document.getElementById("audio");
         const loader = document.querySelector(".loader");
 
+        // Predefined audio URLs based on combinations of genre, culture, and tempo
+        const musicDatabase = {
+            "pop": {
+                "indian": {
+                    "slow": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    "medium": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    "fast": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+                },
+                "african": {
+                    "slow": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    "medium": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    "fast": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+                },
+                "celtic": {
+                    "slow": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    "medium": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    "fast": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+                },
+                "flamenco": {
+                    "slow": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    "medium": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    "fast": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+                }
+            },
+            "edm": {
+                "indian": {
+                    "slow": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                    "medium": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                    "fast": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+                },
+                "african": {
+                    "slow": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+                    "medium": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3",
+                    "fast": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
+                },
+                "celtic": {
+                    "slow": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                    "medium": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                    "fast": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+                },
+                "flamenco": {
+                    "slow": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                    "medium": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                    "fast": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3"
+                }
+            }
+        };
+
+        // Store used combinations to avoid repeat
+        const usedCombinations = new Set();
+
         async function fetchFusionMusic(genre, culture, tempo) {
             try {
                 loader.style.display = "block"; // Show loader
-                // Mock API response for testing in sandboxed environments
-                const mockResponse = {
-                    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-                };
 
-                // Simulate fetch with mock response
-                await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network delay
-                return mockResponse.audioUrl; // Return mock audio URL
+                const combinationKey = `${genre}-${culture}-${tempo}`;
+
+                // Check if this combination has been used
+                if (usedCombinations.has(combinationKey)) {
+                    alert("This combination has already been used. Please try another one.");
+                    return;
+                }
+
+                // Mark this combination as used
+                usedCombinations.add(combinationKey);
+
+                // Simulate fetch with predefined data
+                const audioUrl = musicDatabase[genre]?.[culture]?.[tempo];
+                if (!audioUrl) {
+                    throw new Error("Music not found for selected combination.");
+                }
+
+                // Simulate network delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                return audioUrl; // Return music URL
             } catch (error) {
                 console.error(error);
                 alert("Error generating music. Please try again.");
